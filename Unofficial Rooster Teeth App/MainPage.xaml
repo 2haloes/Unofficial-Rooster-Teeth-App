@@ -1,0 +1,28 @@
+﻿<Page
+    x:Class="Unofficial_Rooster_Teeth_App.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Unofficial_Rooster_Teeth_App"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ListBox x:Name="RTSitesList" HorizontalAlignment="Left" Width="128px" Margin="20,20,0,10" VerticalAlignment="Top" SelectionChanged="RTSitesList_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Path=Name}" TextAlignment="Center" />
+                        <Image Source="{Binding Path=Image}" Height="64" Width="64" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button x:Name="ContinueButton" IsEnabled="False" Content="Continue -->" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="154" Height="39" Click="ContinueButton_Click"/>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Name="SiteText" VerticalAlignment="Top" Margin="0,-64,0,0" Text="Welcome" FontSize="32" />
+            <Image Name="SiteImage" VerticalAlignment="Bottom" Height="128px" Width="128px" />
+        </Grid>
+        
+    </Grid>
+</Page>
