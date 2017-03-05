@@ -30,33 +30,23 @@ namespace Unofficial_Rooster_Teeth_App
         {
             string VideoURL = "";
             this.InitializeComponent();
-            VideoURL = LoadPlayer().Result;
-            VideoURL = Task.Factory.StartNew( async () => await LoadPlayer()).Result.Result;
+            VideoURL = LoadPlayer();
             RTPlayer.Source = new Uri(VideoURL);
             RTPlayer.AutoPlay = true;
             
         }
 
-        public async Task<string> LoadPlayer()
+        public string LoadPlayer()
         {
             using (var wc = new HttpClient())
             {
-                HttpResponseMessage response = await wc.GetAsync(new Uri(Episodes.SingleEpisode.PageURL));
+                HttpResponseMessage response = wc.GetAsync(new Uri(Episodes.SingleEpisode.PageURL)).Result;
                 using (HttpContent content = response.Content)
                 {
-                    string PageSource = await content.ReadAsStringAsync();
+                    string PageSource = content.ReadAsStringAsync().Result;
                     PageSource = PageSource.Remove(0, PageSource.IndexOf("http://wpc.1765A.taucdn"));
                     PageSource = PageSource.Substring(0, PageSource.IndexOf("'"));
                     PageSource = PageSource.Replace("index", "NewHLS-480P");
-                    //MediaPlayerElement RTPlay = new MediaPlayerElement()
-                    //{
-                    //    Name = "RTPlay",
-                    //    Stretch = Stretch.Uniform,
-                    //    Source = MediaSource.CreateFromUri(new Uri(PageSource)),
-                    //    AutoPlay = true,
-                    //    AreTransportControlsEnabled = true
-                    //};
-                    //MainGrid.Children.Add(RTPlay);
                     return PageSource;
                 }
             }
