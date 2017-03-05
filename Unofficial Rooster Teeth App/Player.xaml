@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <MediaPlayerElement Name="RTPlayer" AutoPlay="True" AreTransportControlsEnabled="True" Stretch="Uniform" />
+    <Grid Name="MainGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <MediaElement Name="RTPlayer" AutoPlay="True" AreTransportControlsEnabled="True" Stretch="Uniform" />
     </Grid>
 </Page>

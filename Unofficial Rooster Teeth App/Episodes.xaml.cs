@@ -23,9 +23,11 @@ namespace Unofficial_Rooster_Teeth_App
     /// </summary>
     public sealed partial class Episodes : Page
     {
+        public string EpisodeURL;
+        public static string EpisodeImgURL;
         List<List<EpisodesCode>> AllSeasons = new List<List<EpisodesCode>>();
         List<EpisodesCode> SingleSeason = new List<EpisodesCode>();
-        EpisodesCode SingleEpisode = new EpisodesCode();
+        public static EpisodesCode SingleEpisode = new EpisodesCode();
         public Episodes()
         {
             this.InitializeComponent();
@@ -59,7 +61,9 @@ namespace Unofficial_Rooster_Teeth_App
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage));
+            Frame.Navigate(typeof(Player));
+            EpisodeURL = SingleEpisode.PageURL;
+            EpisodeImgURL = SingleEpisode.Image;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
