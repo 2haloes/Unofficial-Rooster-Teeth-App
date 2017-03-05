@@ -55,7 +55,7 @@ namespace Unofficial_Rooster_Teeth_App
             return AllEpisodesCode;
         }
 
-        private static List<List<EpisodesCode>> FromShowPage(string Webpage)
+        private async static List<List<EpisodesCode>> FromShowPage(string Webpage)
         {
             List<List<EpisodesCode>> AllEpisodesCode = new List<List<EpisodesCode>>();
             List<EpisodesCode> SeasonEpisodesCode = new List<EpisodesCode>();
@@ -91,7 +91,14 @@ namespace Unofficial_Rooster_Teeth_App
                 else
                 {
                     string tempString = SeasonString.Remove(0, (checkchar + 18));
-
+                    using (var wc = new HttpClient())
+                    {
+                        HttpResponseMessage response = await wc.GetAsync(new Uri(tempString.Remove(tempString.IndexOf(">") - 1)));
+                        using (HttpContent content = response.Content)
+                        {
+                            Webpage = await content.ReadAsStringAsync();
+                        }
+                    }
                 }
                 
                     foreach (string[] EpisodeItem in EpisodesCodeArray)
