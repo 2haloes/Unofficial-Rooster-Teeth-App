@@ -46,7 +46,7 @@ namespace Unofficial_Rooster_Teeth_App
             // Reverse seasons from count (1 = 12 etc.)
             //if (Webpage.IndexOf("pull") == -1)
            // {
-                AllEpisodesCode = FromShowPage(Webpage);
+                AllEpisodesCode = await FromShowPage(Webpage);
            // }
            // else
             //{
@@ -55,19 +55,22 @@ namespace Unofficial_Rooster_Teeth_App
             return AllEpisodesCode;
         }
 
-        private async static List<List<EpisodesCode>> FromShowPage(string Webpage)
+        private async static Task<List<List<EpisodesCode>>> FromShowPage(string Webpage)
         {
+            #region Variables
             List<List<EpisodesCode>> AllEpisodesCode = new List<List<EpisodesCode>>();
             List<EpisodesCode> SeasonEpisodesCode = new List<EpisodesCode>();
             List<string[]> EpisodesCodeArray = new List<string[]>();
             List<string[]> SeasonsArray = new List<string[]>();
+            List<string> PageList = new List<string>();
             string[] SeasonsBlock;
             string[] EpisodeBlocks;
             int checkchar = 0;
             int season = 1;
             checkchar = Webpage.IndexOf("tab-content-episodes");
             Webpage = Webpage.Remove(0, checkchar);
-
+            #endregion
+            #region Get episode/season blocks
             // Split into seasons into blocks of episodes
             SeasonsBlock = Webpage.Split(new string[] { "ul class='grid-blocks'" }, StringSplitOptions.None);
             // This removes the rest of the page, this is because it was showing merch adverts in the app
@@ -76,32 +79,54 @@ namespace Unofficial_Rooster_Teeth_App
             foreach (var SeasonString in SeasonsBlock)
             {
                 // If there isn't a link to a full season that goes somewhere else, get the epsodes from the current page
+                // (This is for each season is seasons can be of different lengths)
                 if ((checkchar = SeasonString.IndexOf("pull-right")) == -1)
                 {
                     EpisodeBlocks = SeasonString.Split(new string[] { "</li>" }, StringSplitOptions.None);
                     EpisodesCodeArray = new List<string[]>();
                     foreach (string item in EpisodeBlocks)
                     {
-                      //  if (!(item == EpisodeBlocks[EpisodeBlocks.Count() - 1]))
-                       // {
-                            EpisodesCodeArray.Add(item.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
-                        //}
+                        EpisodesCodeArray.Add(item.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
                     }
                 }
                 else
                 {
-                    string tempString = SeasonString.Remove(0, (checkchar + 18));
-                    using (var wc = new HttpClient())
+                    // Cuts the url of the season page
+                    string tempString = "";
+                    PageList = new List<string>();
+                    tempString = SeasonString.Remove(0, (checkchar + 18));
+                    tempString = tempString.Remove(tempString.IndexOf(">") - 1) +"?page=";
+                    int pageNum = 1;
+                    string pagestring = "";
+                    // Downloads the page and checks if there is content, when there isn't then it exits the loop
+                    do
                     {
-                        HttpResponseMessage response = await wc.GetAsync(new Uri(tempString.Remove(tempString.IndexOf(">") - 1)));
-                        using (HttpContent content = response.Content)
+                        using (var wc = new HttpClient())
                         {
-                            Webpage = await content.ReadAsStringAsync();
+                            HttpResponseMessage response = await wc.GetAsync(new Uri(tempString + pageNum));
+                            using (HttpContent content = response.Content)
+                            {
+                                PageList.Add(await content.ReadAsStringAsync());
+                            }
                         }
+                        checkchar = PageList[pageNum - 1].IndexOf("timestamp");
+                        pageNum++;
+                    } while (checkchar != -1);
+                    PageList.RemoveAt(PageList.Count - 1);
+                    for (int i = 0; i < PageList.Count; i++)
+                    {
+                        PageList[i] = PageList[i].Remove(0, PageList[i].IndexOf("grid-blocks"));
+                        pagestring += PageList[i].Substring(0, PageList[i].IndexOf("pagination"));
+                    }
+                    EpisodeBlocks = pagestring.Split(new string[] { "</li>" }, StringSplitOptions.None);
+                    EpisodesCodeArray = new List<string[]>();
+                    foreach (string item in EpisodeBlocks)
+                    {
+                        EpisodesCodeArray.Add(item.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
                     }
                 }
-                
-                    foreach (string[] EpisodeItem in EpisodesCodeArray)
+                #endregion
+                foreach (string[] EpisodeItem in EpisodesCodeArray)
                     {
                         string PageURL = null;
                         string Name = null;

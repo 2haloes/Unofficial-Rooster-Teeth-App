@@ -31,6 +31,7 @@ namespace Unofficial_Rooster_Teeth_App
             List<string[]> ShowArrays = new List<string[]>();
             List<ShowsCode> AllShows = new List<ShowsCode>();
             string[] ShowBlocks;
+            // Downloads the page for the shows (each RT site has a different domain but a similar page)
             using (var wc = new HttpClient())
             {
                 HttpResponseMessage response = await wc.GetAsync(new Uri(SiteURL));
@@ -40,6 +41,7 @@ namespace Unofficial_Rooster_Teeth_App
                 }
             }
             int checkchar = 0;
+            // Finds where the data for the shows are and cuts it from the string
             checkchar = webpage.IndexOf("<h2>New");
             checkchar = checkchar + 61;
             webpage = webpage.Remove(0, checkchar);
@@ -47,6 +49,7 @@ namespace Unofficial_Rooster_Teeth_App
             ShowBlocks = webpage.Split(new string[] { "</li>" }, StringSplitOptions.None);
             foreach (string item in ShowBlocks)
             {
+                // The last result is not a show and is ignored, will likely replace with a better solution later on
                 if (item == ShowBlocks[ShowBlocks.Count() - 1])
                 {
 
@@ -57,6 +60,9 @@ namespace Unofficial_Rooster_Teeth_App
                 }
             }
 
+            // This takes:
+            // The name, image and amount of Episodes & Seasons for display
+            // and the URL to download next (If that show is selected)
             foreach (string[] item in ShowArrays)
             {
                 string ShowURL = null;
@@ -87,9 +93,7 @@ namespace Unofficial_Rooster_Teeth_App
                         Info = stringitem.Remove(0, stringitem.IndexOf('>') + 1);
                         Info = Info.Remove(Info.IndexOf('<'));
                     }
-
                 }
-
                 AllShows.Add(new ShowsCode(ShowURL, Name, Image, Info));
             }
             return AllShows;
