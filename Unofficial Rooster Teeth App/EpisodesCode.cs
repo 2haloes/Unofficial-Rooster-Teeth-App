@@ -44,14 +44,14 @@ namespace Unofficial_Rooster_Teeth_App
                 }
             }
             // Reverse seasons from count (1 = 12 etc.)
-            if (Webpage.IndexOf("pull") == -1)
-            {
+            //if (Webpage.IndexOf("pull") == -1)
+           // {
                 AllEpisodesCode = FromShowPage(Webpage);
-            }
-            else
-            {
-                AllEpisodesCode = FromSeasonPage(Webpage);
-            }
+           // }
+           // else
+            //{
+                //AllEpisodesCode = FromSeasonPage(Webpage);
+           // }
             return AllEpisodesCode;
         }
 
@@ -68,21 +68,32 @@ namespace Unofficial_Rooster_Teeth_App
             checkchar = Webpage.IndexOf("tab-content-episodes");
             Webpage = Webpage.Remove(0, checkchar);
 
-            // Split into seasons somehow then into episode blocks... or something like that
+            // Split into seasons into blocks of episodes
             SeasonsBlock = Webpage.Split(new string[] { "ul class='grid-blocks'" }, StringSplitOptions.None);
+            // This removes the rest of the page, this is because it was showing merch adverts in the app
             SeasonsBlock[SeasonsBlock.Count() - 1] = SeasonsBlock[SeasonsBlock.Count() - 1].Substring(0, SeasonsBlock[SeasonsBlock.Count() - 1].IndexOf("</article>"));
             season = SeasonsBlock.Count();
             foreach (var SeasonString in SeasonsBlock)
             {
-                EpisodeBlocks = SeasonString.Split(new string[] { "</li>" }, StringSplitOptions.None);
-                EpisodesCodeArray = new List<string[]>();
-                foreach (string item in EpisodeBlocks)
+                // If there isn't a link to a full season that goes somewhere else, get the epsodes from the current page
+                if ((checkchar = SeasonString.IndexOf("pull-right")) == -1)
                 {
-                  //  if (!(item == EpisodeBlocks[EpisodeBlocks.Count() - 1]))
-                   // {
-                        EpisodesCodeArray.Add(item.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
-                    //}
+                    EpisodeBlocks = SeasonString.Split(new string[] { "</li>" }, StringSplitOptions.None);
+                    EpisodesCodeArray = new List<string[]>();
+                    foreach (string item in EpisodeBlocks)
+                    {
+                      //  if (!(item == EpisodeBlocks[EpisodeBlocks.Count() - 1]))
+                       // {
+                            EpisodesCodeArray.Add(item.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
+                        //}
+                    }
                 }
+                else
+                {
+                    string tempString = SeasonString.Remove(0, (checkchar + 18));
+
+                }
+                
                     foreach (string[] EpisodeItem in EpisodesCodeArray)
                     {
                         string PageURL = null;
