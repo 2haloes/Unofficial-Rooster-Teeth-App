@@ -32,6 +32,8 @@ namespace Unofficial_Rooster_Teeth_App
             // This loads the app settings
             SettingsValues = ApplicationData.Current.LocalSettings;
             QualityComboBox.SelectedItem = SettingsValues.Values["Quality"];
+            UserNameTextBox.Text = (string)SettingsValues.Values["Username"];
+            PasswordTextBox.Password = (string)SettingsValues.Values["Password"];
         }
 
         public void ComboBoxData()

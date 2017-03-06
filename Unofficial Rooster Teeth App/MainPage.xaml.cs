@@ -41,6 +41,8 @@ namespace Unofficial_Rooster_Teeth_App
             if (SettingsValues.Values["Quality"] == null)
             {
                 SettingsValues.Values["Quality"] = "Auto";
+                SettingsValues.Values["Username"] = "";
+                SettingsValues.Values["Password"] = "";
             }
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Landscape;
             this.InitializeComponent();

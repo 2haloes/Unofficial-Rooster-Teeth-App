@@ -10,7 +10,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <ComboBox x:Name="QualityComboBox" Header="Quality" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="UserNameTextBox" Header="Username" HorizontalAlignment="Left" Margin="10,75,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="PasswordTextBox" Header="Password" HorizontalAlignment="Left" Margin="10,140,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="120"/>
+        <PasswordBox x:Name="PasswordTextBox" Header="Password" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="44,205,0,0" VerticalAlignment="Top" Click="SaveButton_Click"/>
         <Button x:Name="BackButton" Content="Back" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="120" Click="BackButton_Click"/>
         <TextBlock HorizontalAlignment="Left" Margin="135,30,0,0" TextWrapping="NoWrap" Text="NOTE, Auto should work with any video&#10;but may result in lower quality videos" VerticalAlignment="Top"/>

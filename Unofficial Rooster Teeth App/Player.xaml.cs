@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,6 +27,7 @@ namespace Unofficial_Rooster_Teeth_App
     /// </summary>
     public sealed partial class Player : Page
     {
+        ApplicationDataContainer SettingsValues = ApplicationData.Current.LocalSettings;
         public Player()
         {
             string VideoURL = "";
@@ -46,7 +48,11 @@ namespace Unofficial_Rooster_Teeth_App
                     string PageSource = content.ReadAsStringAsync().Result;
                     PageSource = PageSource.Remove(0, PageSource.IndexOf("http://wpc.1765A.taucdn"));
                     PageSource = PageSource.Substring(0, PageSource.IndexOf("'"));
-                    PageSource = PageSource.Replace("index", "NewHLS-480P");
+                    if ((string)SettingsValues.Values["Quality"] != "Auto")
+                    {
+                        PageSource = PageSource.Replace("index", "NewHLS-" + SettingsValues.Values["Quality"]);
+                    }
+                    
                     return PageSource;
                 }
             }
