@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -36,6 +37,11 @@ namespace Unofficial_Rooster_Teeth_App
             RTList.Add(new RTSites("Game Attack", "https://gameattack.roosterteeth.com/ga-favicon.png", "http://gameattack.roosterteeth.com/show"));
             RTList.Add(new RTSites("The Know", "https://theknow.roosterteeth.com/tk-favicon.png", "http://theknow.roosterteeth.com/show"));
             RTList.Add(new RTSites("Cow Chop", "https://cowchop.roosterteeth.com/cc-favicon.png", "http://cowchop.roosterteeth.com/show"));
+            ApplicationDataContainer SettingsValues = ApplicationData.Current.LocalSettings;
+            if (SettingsValues.Values["Quality"] == null)
+            {
+                SettingsValues.Values["Quality"] = "Auto";
+            }
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Landscape;
             this.InitializeComponent();
             SiteImage.Source = new BitmapImage(new Uri ("https://roosterteeth.com/rt-favicon.png"));
@@ -68,6 +74,10 @@ namespace Unofficial_Rooster_Teeth_App
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(Shows));
+        }
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(Settings));
         }
     }
 }

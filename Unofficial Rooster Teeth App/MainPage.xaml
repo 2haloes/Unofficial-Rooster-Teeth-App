@@ -23,6 +23,7 @@
             <TextBlock Name="SiteText" VerticalAlignment="Top" Margin="0,-64,0,0" Text="Welcome" FontSize="32" />
             <Image Name="SiteImage" VerticalAlignment="Bottom" Height="128px" Width="128px" />
         </Grid>
-        
+        <Button x:Name="ContinueButton_Copy" Content="Settings" HorizontalAlignment="Center" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="154" Height="39" Click="SettingsButton_Click"/>
+
     </Grid>
 </Page>
