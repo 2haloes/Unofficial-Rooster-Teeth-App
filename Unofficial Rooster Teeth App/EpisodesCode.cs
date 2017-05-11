@@ -73,8 +73,6 @@ namespace Unofficial_Rooster_Teeth_App
             #region Get episode/season blocks
             // Split into seasons into blocks of episodes
             SeasonsBlock = Webpage.Split(new string[] { "ul class='grid-blocks'" }, StringSplitOptions.None);
-            // This removes the rest of the page, this is because it was showing merch adverts in the app
-            SeasonsBlock[SeasonsBlock.Count() - 1] = SeasonsBlock[SeasonsBlock.Count() - 1].Substring(0, SeasonsBlock[SeasonsBlock.Count() - 1].IndexOf("</article>"));
             season = SeasonsBlock.Count();
             foreach (var SeasonString in SeasonsBlock)
             {
