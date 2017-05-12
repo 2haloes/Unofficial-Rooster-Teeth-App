@@ -20,8 +20,12 @@
         </ListBox>
         <Button x:Name="ContinueButton" IsEnabled="False" Content="Continue -->" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="154" Height="39" Click="ContinueButton_Click"/>
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Name="SiteText" VerticalAlignment="Top" Margin="0,-64,0,0" Text="Welcome" FontSize="32" />
-            <Image Name="SiteImage" VerticalAlignment="Bottom" Height="128px" Width="128px" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Name="SiteText" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,-64,0,0" Text="Welcome" FontSize="32" />
+            <Image Name="SiteImage" Grid.Row="1" VerticalAlignment="Center" Height="256px" Width="256px" />
         </Grid>
         <Button x:Name="ContinueButton_Copy" Content="Settings" HorizontalAlignment="Center" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="154" Height="39" Click="SettingsButton_Click"/>
 

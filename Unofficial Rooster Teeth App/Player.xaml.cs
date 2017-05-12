@@ -9,6 +9,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Storage;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -30,12 +31,24 @@ namespace Unofficial_Rooster_Teeth_App
         ApplicationDataContainer SettingsValues = ApplicationData.Current.LocalSettings;
         public Player()
         {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
             string VideoURL = "";
             this.InitializeComponent();
             VideoURL = LoadPlayer();
             RTPlayer.Source = new Uri(VideoURL);
             RTPlayer.AutoPlay = true;
             
+        }
+
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (this.Frame.CanGoBack)
+            {
+                e.Handled = true;
+                SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
+                this.Frame.GoBack();
+            }
         }
 
         public string LoadPlayer()
@@ -48,14 +61,44 @@ namespace Unofficial_Rooster_Teeth_App
                     string PageSource = content.ReadAsStringAsync().Result;
                     PageSource = PageSource.Remove(0, PageSource.IndexOf("http://wpc.1765A.taucdn"));
                     PageSource = PageSource.Substring(0, PageSource.IndexOf("'"));
+                    bool NewHLS = OldOrNew(PageSource);
                     if ((string)SettingsValues.Values["Quality"] != "Auto")
                     {
-                        PageSource = PageSource.Replace("index", "NewHLS-" + SettingsValues.Values["Quality"]);
+                        if (NewHLS)
+                        {
+                            PageSource = PageSource.Replace("index", "NewHLS-" + SettingsValues.Values["Quality"]);
+                        }
+                        else
+                        {
+                            if ((string)SettingsValues.Values["Quality"] == "360P")
+                            {
+                                // NOTE: This loads in 360P quality according to the index file
+                                // I don't know why
+                                PageSource = PageSource.Replace("index", "480P");
+                            }
+                            else
+                            {
+                                PageSource = PageSource.Replace("index", (string)SettingsValues.Values["Quality"]);
+                            }
+                        }
                     }
-                    
                     return PageSource;
                 }
             }
+        }
+
+        public bool OldOrNew(string PageURL)
+        {
+            bool NewHLS;
+            using (var wc = new HttpClient())
+            {
+                HttpResponseMessage response = wc.GetAsync(new Uri(PageURL)).Result;
+                using (HttpContent content = response.Content)
+                {
+                    NewHLS = content.ReadAsStringAsync().Result.Contains("NewHLS");
+                }
+            }
+            return NewHLS;
         }
     }
 }

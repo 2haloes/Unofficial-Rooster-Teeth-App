@@ -25,11 +25,16 @@
         </ListBox>
         <Button x:Name="ContinueButton" Grid.Column="1" IsEnabled="False" Content="Continue -->" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="154" Height="39" Click="ContinueButton_Click" Grid.Row="1"/>
         <Button x:Name="BackButton" Grid.Column="1" Content="&lt;-- Back" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="154" Height="39" Click="BackButton_Click" Grid.Row="1"/>
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="350px" Margin="202,5,117,5" Grid.RowSpan="2" Width="321">
-            <TextBlock Name="EpisodeText" VerticalAlignment="Top" Text="Select an Episode" TextWrapping="Wrap" FontSize="32" HorizontalAlignment="Right" Width="237" />
-            <Image Name="EpisodeImage" Margin="0,50,0,0" VerticalAlignment="Center" Height="128px" Width="128px" />
-            <Grid VerticalAlignment="Bottom" Margin="0,50,0,0" Width="128px" Height="128px">
-                <TextBlock Name="FirstMember" Foreground="Gold" FontSize="48"  VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="202,5,117,5" Grid.RowSpan="2" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Name="EpisodeText" Grid.Row="0" VerticalAlignment="Bottom" Text="Select an Episode" TextWrapping="Wrap" FontSize="32" HorizontalAlignment="Center"  />
+            <Image Name="EpisodeImage" Grid.Row="1"  VerticalAlignment="Center" Height="256px" Width="256px" />
+            <Grid VerticalAlignment="Top" Grid.Row="2" Width="256px" Height="128px">
+                <TextBlock Name="FirstMember" Foreground="Gold" FontSize="48" VerticalAlignment="Center" HorizontalAlignment="Left" />
                 <TextBlock Name="Runtime" FontSize="32"  VerticalAlignment="Center" HorizontalAlignment="Right" />
             </Grid>
         </Grid>

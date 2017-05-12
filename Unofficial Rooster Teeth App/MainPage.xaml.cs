@@ -7,6 +7,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
 using Windows.Storage;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,6 +30,8 @@ namespace Unofficial_Rooster_Teeth_App
         public static RTSites SelectedRTSite = new RTSites();
         public MainPage()
         {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
             RTList = new List<RTSites>();
             RTList.Add(new RTSites("Rooster Teeth", "https://roosterteeth.com/rt-favicon.png", "http://roosterteeth.com/show"));
             RTList.Add(new RTSites("Achievement \n Hunter", "https://achievementhunter.roosterteeth.com/ah-favicon.png", "http://achievementhunter.roosterteeth.com/show"));
@@ -48,6 +51,17 @@ namespace Unofficial_Rooster_Teeth_App
             this.InitializeComponent();
             SiteImage.Source = new BitmapImage(new Uri ("https://roosterteeth.com/rt-favicon.png"));
             RTSitesList.ItemsSource = RTList;
+        }
+
+        /// <summary>
+        /// Used for mobile devices (As the back button is hidden) and the only way back is to exit
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            e.Handled = true;
+            Application.Current.Exit();
         }
 
         public void RTSitesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -75,10 +89,12 @@ namespace Unofficial_Rooster_Teeth_App
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
+            SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
             Frame.Navigate(typeof(Shows));
         }
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
+            SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
             Frame.Navigate(typeof(Settings));
         }
     }

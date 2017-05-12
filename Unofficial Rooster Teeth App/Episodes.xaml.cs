@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -30,8 +31,20 @@ namespace Unofficial_Rooster_Teeth_App
         public static EpisodesCode SingleEpisode = new EpisodesCode();
         public Episodes()
         {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
             this.InitializeComponent();
             FillList();
+        }
+
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (this.Frame.CanGoBack)
+            {
+                e.Handled = true;
+                SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
+                this.Frame.GoBack();
+            }
         }
 
         public async void FillList()
@@ -68,6 +81,7 @@ namespace Unofficial_Rooster_Teeth_App
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
             Frame.GoBack();
         }
 
@@ -78,6 +92,7 @@ namespace Unofficial_Rooster_Teeth_App
             EpisodeText.Text = "";
             EpisodeImage.Source = null;
             FirstMember.Text = "";
+            Runtime.Text = "";
             ContinueButton.IsEnabled = false;
             RTEpisodesList.ItemsSource = AllSeasons[(int)RTEpisodeSeason.SelectedItem - 1];
         }

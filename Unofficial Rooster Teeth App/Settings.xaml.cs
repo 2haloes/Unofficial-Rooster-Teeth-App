@@ -7,6 +7,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Security.Credentials;
 using Windows.Storage;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -31,12 +32,24 @@ namespace Unofficial_Rooster_Teeth_App
         ApplicationDataContainer SettingsValues;
         public Settings()
         {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
             this.InitializeComponent();
             ComboBoxData();
             // This loads the app settings
             SettingsValues = ApplicationData.Current.LocalSettings;
             SetupLocker();
             QualityComboBox.SelectedItem = SettingsValues.Values["Quality"];
+        }
+
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (this.Frame.CanGoBack)
+            {
+                e.Handled = true;
+                SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
+                this.Frame.GoBack();
+            }
         }
 
         public void ComboBoxData()
@@ -83,6 +96,7 @@ namespace Unofficial_Rooster_Teeth_App
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
             Frame.GoBack();
         }
     }

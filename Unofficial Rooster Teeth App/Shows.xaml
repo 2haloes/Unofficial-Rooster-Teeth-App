@@ -24,9 +24,13 @@
         </ListBox>
         <Button x:Name="ContinueButton" Grid.Column="1" IsEnabled="False" Content="Continue -->" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="154" Height="39" Click="ContinueButton_Click" Grid.Row="1"/>
         <Button x:Name="BackButton" Grid.Column="1" Content="&lt;-- Back" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="154" Height="39" Click="BackButton_Click" Grid.Row="1"/>
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="225,116,79,53" Width="336">
-            <TextBlock Name="ShowText" VerticalAlignment="Top" Margin="0,-64,0,0" Text="Select a show" FontSize="32" />
-            <Image Name="ShowImage" VerticalAlignment="Center" Height="128px" Width="128px" />
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="225,116,79,53">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Name="ShowText" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Text="Select a show" FontSize="32" />
+            <Image Name="ShowImage" Grid.Row="1" VerticalAlignment="Center" Height="256px" Width="256px"/>
         </Grid>
 
     </Grid>
