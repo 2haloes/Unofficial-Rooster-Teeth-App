@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Security.Credentials;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -19,10 +20,13 @@ using Windows.UI.Xaml.Navigation;
 namespace Unofficial_Rooster_Teeth_App
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Used to access and change settings such as the user's account and video quality
     /// </summary>
     public sealed partial class Settings : Page
     {
+        PasswordVault Vault;
+        string ResourceName;
+        PasswordCredential Credential;
         List<string> QualityList = new List<string>();
         ApplicationDataContainer SettingsValues;
         public Settings()
@@ -31,14 +35,13 @@ namespace Unofficial_Rooster_Teeth_App
             ComboBoxData();
             // This loads the app settings
             SettingsValues = ApplicationData.Current.LocalSettings;
+            SetupLocker();
             QualityComboBox.SelectedItem = SettingsValues.Values["Quality"];
-            UserNameTextBox.Text = (string)SettingsValues.Values["Username"];
-            PasswordTextBox.Password = (string)SettingsValues.Values["Password"];
         }
 
         public void ComboBoxData()
         {
-            QualityList.Add("Auto");
+            QualityList.Add("Auto"); 
             QualityList.Add("240P");
             QualityList.Add("360P");
             QualityList.Add("480P");
@@ -47,9 +50,35 @@ namespace Unofficial_Rooster_Teeth_App
             QualityComboBox.ItemsSource = QualityList;
         }
 
+        public void SetupLocker()
+        {
+            ResourceName = "Unofficial Rooster";
+            Credential = null;
+            IReadOnlyList<PasswordCredential> credentialList;
+            Vault = new PasswordVault();
+            try
+            {
+                credentialList = Vault.FindAllByResource(ResourceName);
+                Credential = credentialList[0];
+                UserNameTextBox.Text = Credential.UserName;
+                PasswordTextBox.Password = Vault.Retrieve(ResourceName, Credential.UserName).Password;
+            }
+            catch (Exception)
+            {
+                
+            }
+        }
+        public void UpdateVault()
+        {
+            Vault.Remove(Credential);
+            Vault.Add(new PasswordCredential(ResourceName, UserNameTextBox.Text, PasswordTextBox.Password));
+        }
+
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             SettingsValues.Values["Quality"] = QualityComboBox.SelectedItem;
+            UpdateVault();
+            SettingsValues.Values["Username"] = UserNameTextBox.Text;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
