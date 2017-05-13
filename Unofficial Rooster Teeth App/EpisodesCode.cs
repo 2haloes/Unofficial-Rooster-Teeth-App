@@ -44,14 +44,7 @@ namespace Unofficial_Rooster_Teeth_App
                 }
             }
             // Reverse seasons from count (1 = 12 etc.)
-            //if (Webpage.IndexOf("pull") == -1)
-           // {
-                AllEpisodesCode = await FromShowPage(Webpage);
-           // }
-           // else
-            //{
-                //AllEpisodesCode = FromSeasonPage(Webpage);
-           // }
+            AllEpisodesCode = await FromShowPage(Webpage);
             return AllEpisodesCode;
         }
 

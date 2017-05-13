@@ -74,6 +74,7 @@ namespace Unofficial_Rooster_Teeth_App
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
+            SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
             Frame.Navigate(typeof(Player));
             EpisodeURL = SingleEpisode.PageURL;
             EpisodeImgURL = SingleEpisode.Image;
