@@ -29,7 +29,7 @@ namespace Unofficial_Rooster_Teeth_App
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class Player : Page
-    {
+    { 
         ApplicationDataContainer SettingsValues = ApplicationData.Current.LocalSettings;
         public Player()
         {
