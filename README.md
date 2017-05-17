@@ -5,4 +5,6 @@ NOTE, any commit upto and including https://github.com/2haloes/Unofficial-Rooste
 
 As of 2017-05-13, this program has be relisenced again under MPL and as this is close to release, it should stay like this unless anything major changes
 
+If anyone would like to compile this, they need Visual Studio 2017 (Community is fine) and Universal Windows Platform installed for it. Clone the git project and build it within Visual Studio
+
 This is not endorsed by Rooster Teeth in any way.  Views, opinions, thoughts are all my own.  Rooster Teeth and [name of Rooster Teeth show/character/etc.] are trade names or registered trademarks of Rooster Teeth Productions, LLC.  © Rooster Teeth Productions, LLC.
