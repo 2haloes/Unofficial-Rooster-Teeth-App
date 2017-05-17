@@ -1,26 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Unofficial_Rooster_Teeth_App
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Shows all of the shows from a selected website
     /// </summary>
     public sealed partial class Shows : Page
     {
@@ -44,12 +34,20 @@ namespace Unofficial_Rooster_Teeth_App
             }
         }
 
+        /// <summary>
+        /// This fills the list of shows (this does take a few seconds to load everything however)
+        /// </summary>
         public async void FillList()
         {
             ShowList = await ShowsCode.ShowScraper(MainPage.SelectedRTSite.SiteURL);
             RTShowsList.ItemsSource = ShowList;
         }
 
+        /// <summary>
+        /// This updates the displayed values to show what is selected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void RTShowsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedShow = (ShowsCode)RTShowsList.SelectedItem;

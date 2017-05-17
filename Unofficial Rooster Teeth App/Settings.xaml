@@ -14,5 +14,8 @@
         <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="44,205,0,0" VerticalAlignment="Top" Click="SaveButton_Click"/>
         <Button x:Name="BackButton" Content="Back" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="120" Click="BackButton_Click"/>
         <TextBlock HorizontalAlignment="Left" Margin="135,30,0,0" TextWrapping="NoWrap" Text="NOTE, Auto should work with any video&#10;but may result in lower quality videos" VerticalAlignment="Top"/>
+        <ScrollViewer Height="150" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,245,0,0">
+            <TextBlock Width="100" TextWrapping="Wrap"  Text="This program is not created or endorced by Rooster Teeth or any of the companies who's content is displayed. All content (graphics, videos ect.) displayed within the app are not my own are owned by the company that created them (Rooster Teeth, Game Attack ect.) and any opinions within the app (Not within the content) are my own" />
+        </ScrollViewer>
     </Grid>
 </Page>

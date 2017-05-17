@@ -8,6 +8,6 @@
     mc:Ignorable="d">
 
     <Grid Name="MainGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <MediaElement Name="RTPlayer" AutoPlay="True" AreTransportControlsEnabled="True" Stretch="Uniform" />
+        <MediaElement Name="RTPlayer" AutoPlay="True" MediaEnded="RTPlayer_Finished"  AreTransportControlsEnabled="True" Stretch="Uniform" />
     </Grid>
 </Page>

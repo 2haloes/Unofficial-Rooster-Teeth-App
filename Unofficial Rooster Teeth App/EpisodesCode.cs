@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace Unofficial_Rooster_Teeth_App
 {
@@ -18,6 +16,16 @@ namespace Unofficial_Rooster_Teeth_App
         public string PageURL { get; set; }
         public int Season { get; set; }
 
+        /// <summary>
+        /// Data for each episode
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="Image"></param>
+        /// <param name="Runtime"></param>
+        /// <param name="UploadTime"></param>
+        /// <param name="SponserImage"></param>
+        /// <param name="PageURL"></param>
+        /// <param name="Season"></param>
         public EpisodesCode(string Name, string Image, string Runtime, string UploadTime, string SponserImage, string PageURL, int Season)
         {
             this.Name = Name;
@@ -60,6 +68,7 @@ namespace Unofficial_Rooster_Teeth_App
             string[] EpisodeBlocks;
             int checkchar = 0;
             int season = 1;
+            // Finds where the episodes are placed on the page
             checkchar = Webpage.IndexOf("tab-content-episodes");
             Webpage = Webpage.Remove(0, checkchar);
             #endregion
@@ -117,14 +126,15 @@ namespace Unofficial_Rooster_Teeth_App
                     }
                 }
                 #endregion
+                // Loops though the data of each episode and extracts the data from it
                 foreach (string[] EpisodeItem in EpisodesCodeArray)
                     {
                         string PageURL = null;
                         string Name = null;
                         string Image = null;
                         string Info = null;
-                        string SponserImage = "";
                         string Runtime = null;
+                        string SponserImage = "";
 
                         foreach (string stringitem in EpisodeItem)
                         {
@@ -160,7 +170,7 @@ namespace Unofficial_Rooster_Teeth_App
                             }
                         }
 
-                        if (Name == null || Runtime == null)
+                        if (Name == null || Runtime == null || PageURL == null)
                         {
                             break;
                         }
@@ -177,6 +187,11 @@ namespace Unofficial_Rooster_Teeth_App
             return AllEpisodesCode;
         }
 
+        /// <summary>
+        /// Loads episode data from the season page (used if all episodes aren't shown)
+        /// </summary>
+        /// <param name="Webpage"></param>
+        /// <returns></returns>
         private static List<List<EpisodesCode>> FromSeasonPage(string Webpage)
         {
             List<List<EpisodesCode>> AllEpisodesCode = new List<List<EpisodesCode>>();

@@ -1,26 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Unofficial_Rooster_Teeth_App
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Shows all episodes and seasons of a show
     /// </summary>
     public sealed partial class Episodes : Page
     {
@@ -37,6 +27,11 @@ namespace Unofficial_Rooster_Teeth_App
             FillList();
         }
 
+        /// <summary>
+        /// Used to go back to the shows page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
         {
             if (this.Frame.CanGoBack)
@@ -49,16 +44,24 @@ namespace Unofficial_Rooster_Teeth_App
 
         public async void FillList()
         {
+            // Pulls the episode and seasons list from the website
             AllSeasons = await EpisodesCode.ExtractEpisodesCode(Shows.SelectedShow.ShowURL);
             List<int> SeasonList = new List<int>();
             for (int i = 0; i != AllSeasons.Count; i++)
             {
                 SeasonList.Add(i + 1);
             }
+            // Reverses the season count to start at 1
             AllSeasons.Reverse();
             RTEpisodeSeason.ItemsSource = SeasonList;
         }
 
+        /// <summary>
+        /// Displays information about the episode (Name, thumbnail, if it is FIRST only and the runtime
+        /// Also enables the button to continue to the video player
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void RTEpisodesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SingleEpisode = (EpisodesCode)RTEpisodesList.SelectedItem;
@@ -71,21 +74,34 @@ namespace Unofficial_Rooster_Teeth_App
                 ContinueButton.IsEnabled = true;
             }
         }
-
+        
+        /// <summary>
+        /// Loads the video player
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
             SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
             Frame.Navigate(typeof(Player));
-            EpisodeURL = SingleEpisode.PageURL;
-            EpisodeImgURL = SingleEpisode.Image;
         }
 
+        /// <summary>
+        /// Goes to the shows page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
             Frame.GoBack();
         }
 
+        /// <summary>
+        /// Resets the displayed data and loads the data of the newly selected season
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RTEpisodeSeason_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             RTEpisodesList.SelectedItem = new EpisodesCode();

@@ -1,20 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Security.Credentials;
 using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -52,6 +42,9 @@ namespace Unofficial_Rooster_Teeth_App
             }
         }
 
+        /// <summary>
+        /// Sets up the video quality settings
+        /// </summary>
         public void ComboBoxData()
         {
             QualityList.Add("Auto"); 
@@ -63,6 +56,9 @@ namespace Unofficial_Rooster_Teeth_App
             QualityComboBox.ItemsSource = QualityList;
         }
 
+        /// <summary>
+        /// Sets up the username and password boxes (If none exist then no username or password is saved)
+        /// </summary>
         public void SetupLocker()
         {
             ResourceName = "Unofficial Rooster";
@@ -81,12 +77,20 @@ namespace Unofficial_Rooster_Teeth_App
                 
             }
         }
+        /// <summary>
+        /// This updates the username/password values
+        /// </summary>
         public void UpdateVault()
         {
             Vault.Remove(Credential);
             Vault.Add(new PasswordCredential(ResourceName, UserNameTextBox.Text, PasswordTextBox.Password));
         }
 
+        /// <summary>
+        /// This updates all of the settings when the save button is cicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             SettingsValues.Values["Quality"] = QualityComboBox.SelectedItem;
